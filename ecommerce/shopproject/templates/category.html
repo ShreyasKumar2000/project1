@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+    {% if category %}
+        {{category.description|truncatewords:155}}
+    {% else %}
+        Welcome to URBAN VOGUE
+    {% endif %}
+{% endblock %}
+
+{% block title %}
+    {% if category %}
+        {{category.name}}- URBAN VOGUE
+    {% else %}
+        URBAN VOGUE
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if category %}
+        <div>
+            <div class="row my_row_class">
+                <div class="mx_auto">
+                    <p><a href="{% url 'shopapp:allProdCat' %}">Back</a></p>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+<div class="row my_row_class">
+    {% if category %}
+<!--        <img class="my_image" src="{{category.image.url}}" alt="{{category.name}}">-->
+        </div>
+        <br>
+        <div>
+            <h1 class="text-center my_title">{{category.name}}</h1>
+            <p class="text-justify">{{category.description}}</p>
+        </div>
+    {% else %}
+        <div>
+            <img class="my_image my_image_padding" src="{% static 'image/banner.png' %}" alt="Our Products" width="1170px" >
+        </div>
+        <br>
+
+        <div>
+            <h1 class="text-center my_title"><b>Our Products Collection</b></h1>
+            <p class="text-justify text-center">URBAN VOGUE offer a diverse range of dresses for various occasions. Customers can easily browse through styles, filter preferences, and access detailed information before making a purchase. With convenient interfaces and secure transactions, these sites provide a hassle-free way to explore and buy dresses from the comfort of home.</p>
+        </div>
+    {% endif %}
+<div class="container">
+    <div class="row mx_auto">
+        {% for product in products.object_list %}
+        <div class="my_bottom_margin col-9 col-sm-12 col-md-4 col-lg-4">
+            <div class="card text-center" style="min-width:18rem;">
+                <a href="{{product.get_url}}">
+                    <img class="card-image-top my_image"src="{{product.image.url}}" alt="{{product.name}}" style="height:340px"></a>
+
+
+        <div class="card-body">
+            <h1>{{product.name}}</h1>
+            <p>{{product.price}}</p>
+            </div>
+        </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div>
+        <div class="mx_auto">
+            {% if products.paginator.num_pages > 1 %}
+            <hr>
+            <div class="text-center">
+                {% for pg in products.paginator.page_range %}
+                <a href="?page={{pg}}" class="btn btn-light btn-sm {%if products.number == pg %} active {% endif %}">{{pg}}</a>
+            {% endfor %}
+            </div>
+            {% endif %}
+        </div><br>
+    </div>
+</div>
+
+
+{% endblock %}
